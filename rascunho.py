@@ -1,22 +1,22 @@
 matriz10x10 = [
-    [ 0,  1, 2, 3, 4, 5 , 6, 7, 8, 9, 10,],
-    ["A", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ["B", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ["C", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ["D", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ["E", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ["F", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ["G", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ["H", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ["I", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ["J", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    [ "",  " 1 ", 2, 3, 4, 5 , 6, 7, 8, 9, 10,],
+    ["1", " 🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["2", " 🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "], 
+    ["3", " 🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["4", " 🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["5", " 🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["6", " 🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["7", " 🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["8", " 🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["9", " 🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["10", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "]
     ]
 for i in range(11):
-     print(matriz10x10[i])
+     print(*matriz10x10[i])
 
 
 
-def cordBarcos():   
+def cordBarcosH():   
     print()
     print("para começar escolhe a onde quer deixar seus barcos")
     for escolhas in range (1, 6):
@@ -32,9 +32,9 @@ def cordBarcos():
             coluna_certa = coluna in range(1, 10)
 
             if linha_certa and coluna_certa:
-                matriz10x10[linha][coluna] = 1
+                matriz10x10[linha][coluna] = " 🛥️   "
                 for i in range(11):
-                    print(matriz10x10[i])
+                    print(*matriz10x10[i])
                 print("✅ Posição registrada com sucesso!")
                 break
 
@@ -47,6 +47,6 @@ def cordBarcos():
             elif not coluna_certa:
                 print("❌ Você digitou uma coluna que não existe! Tente novamente.\n")
     for i in range(11):
-        print(matriz10x10[i])
+        print(*matriz10x10[i])
 
-cordBarcos()
+cordBarcosH()
