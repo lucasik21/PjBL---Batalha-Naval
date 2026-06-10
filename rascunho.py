@@ -78,8 +78,8 @@ def computador_pensando(segundos_totais=3):
    
 computador_pensando(3)
 
-
-
+print()
+print()
 
 matriz10x10R = [
     [ "",  "  1️⃣ "," 2️⃣  ",  "3️⃣ ", " 4️⃣ ", " 5️⃣ ", " 6️⃣ ", " 7️⃣ ", " 8️⃣ ", " 9️⃣ ", " 🔟 ",],
@@ -99,21 +99,18 @@ matriz10x10R = [
 def barco():
     n = random.randint(1, 10)
     g = random.randint(1, 10)
-    matriz10x10R[n][g] = "🛥️"
+    matriz10x10R[n][g] = "🛥️  "
         
-barco()
-barco()
-barco()
-barco()
-barco()
-barco()
-item_procurado = "🛥️"
+for n in range(5):
+    barco()
+
+item_procurado = "🛥️  "
 
 total = sum(linha.count(item_procurado) for linha in matriz10x10R)
 
-while total < 5:
+while total <5:
     barco()
-    print("cu")
+    total = sum(linha.count(item_procurado) for linha in matriz10x10R)
 
-for i in range(10):
-    print(matriz10x10R[i])
+for i in range(11):
+    print(*matriz10x10R[i])
