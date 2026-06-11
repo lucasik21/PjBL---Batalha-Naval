@@ -9,7 +9,6 @@ Funcionando via terminal e desta vez, com a adição de funções, último conte
 Ele funciona via Python, então é necessário da linguagem instalada na sua máquina, normalmente utilizado nas IDEs (PyCharm e VSCode)
 
 ## Como jogar
-Jogadas
 O jogo ocorre em turnos:
 
 - O jogador escolhe uma posição para atacar o tabuleiro inimigo
