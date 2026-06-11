@@ -2,7 +2,7 @@ import random
 import time
 import sys
 
-NAVIO = "🛥️"
+NAVIO = "🛥️ "
 AGUA = "🌊"
 ACERTO = "❌"
 ERRO = "⭕"
@@ -230,8 +230,14 @@ def main():
 
             print("\n💻 O COMPUTADOR VENCEU!")
             break
-
+    
     print(f"\nObrigado por jogar, {nome}!")
+
+    print("\n===== CRÉDITOS =====")
+    print("Desenvolvido por:")
+    print("Guilherme Matos Brum de Oliveira")
+    print("Gustavo Povoas Schulz")
+    print("Lucas Maeshiba Ikeda")
 
 # Executa o programa
 if __name__ == "__main__":
