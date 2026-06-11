@@ -3,7 +3,7 @@
 import random
 import time
 
-# Embaixo é feito um dicionário com os barcos e elementos e qual emoji é atribuido a tal
+# Embaixo é feito um "dicionário" com constantes sobre os barcos, elementos e qual emoji é atribuido a tal
 PORTA_AVIOES = "🛫"
 NAVIO_TANQUE = "🚚"
 CONTRATORPEDEIRO = "🚢"
@@ -14,7 +14,7 @@ AGUA = "🌊"
 ACERTO = "❌"
 ERRO = "⭕"
 
-# Atribuimos um valor aos barcos em uma lista
+# Fazemos uma lista contendo cada navio e seu valor atribuido
 FROTA = [
     (PORTA_AVIOES, 5),
     (NAVIO_TANQUE, 4),
@@ -94,9 +94,9 @@ def mostrar_tabuleiro(tabuleiro, titulo):
 
         print("{:2} | {}".format(i + 1, linha_formatada))
 
-# E então a parte mais importante, sobre o posicionamento dos barcos pelo que o usuário digita, pedindo linha e coluna
-# Ele verifica com if se podem ser usadas tais linhas e colunas, e então pedem a direção, que se verifica com for com
-# flag, e no vertical ele vai preenchendo, porém a cada linha que se for preenchida, ele soma.
+# Solicita ao jogador a posição inicial e a direção do navio.
+# Em seguida verifica se o navio cabe no tabuleiro e se não há
+# sobreposição com outro navio antes de posicioná-lo.
 def posicionando_navios_jogador(tabuleiro):
 
     letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
@@ -179,9 +179,9 @@ def posicionando_navios_jogador(tabuleiro):
 
             break
 
-# Aqui foi feito utilizando a biblioteca random, onde para cada simbolo, utilizando o nome_navio, ele vai ocupar certa
-# posição. Nesse caso, o computador escolhe um número aleatório de 0 a 9, e dentro disso ele preenche, também escolhendo
-# aleatoriamente o sentido.
+# Posiciona os navios do computador aleatoriamente utilizando a
+# biblioteca random. Também verifica se o navio cabe no tabuleiro
+# e se não ocupa posições já utilizadas.
 def posicionando_navios_computador(tabuleiro):
 
     for simbolo, tamanho in FROTA:
@@ -227,7 +227,8 @@ def posicionando_navios_computador(tabuleiro):
                         tabuleiro[linha + i][coluna] = simbolo
                     break
 
-
+# Aqui é feito o ataque do jogador, definindo a partir da matriz do computador se o ataque foi água ou embarcação
+# Adicionando também a biblioteca time para adicionar um intervalo entre as jogadas.
 def ataque_jogador(tabuleiroComputador, feedbackJogador):
 
     letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
@@ -283,6 +284,7 @@ def ataque_jogador(tabuleiroComputador, feedbackJogador):
 
         break
 
+# Nessa função, ele verifica se o navio afundou por completo ou ainda existe alguma parte dele depois que foi atingido.
 def navio_afundou(tabuleiro, simbolo):
 
     for linha in tabuleiro:
@@ -293,6 +295,8 @@ def navio_afundou(tabuleiro, simbolo):
             
     return True
 
+# Aqui ele conta quantos navios existem, a partir do símbolo e elemento, verificando e se houver ele adiciona um a
+# quantidade, onde demonstra a quantia de barcos restantes, cumprindo requisito.
 def contar_navios(tabuleiro):
 
     quantidade = 0
@@ -304,6 +308,8 @@ def contar_navios(tabuleiro):
 
     return quantidade
 
+# Realiza um ataque aleatório do computador.
+# Caso a posição sorteada contenha um navio, o ataque é considerado um acerto.
 def ataque_computador(tabuleiroJogador, feedbackComputador):
 
     while True:
@@ -342,6 +348,9 @@ def ataque_computador(tabuleiroJogador, feedbackComputador):
 
         break
 
+# Função principal do programa.
+# Responsável por criar os tabuleiros, iniciar a partida,
+# controlar o turno dos jogadores e verificar as condições de vitória.
 def main():
     nome = tela_inicial()
     tabuleiroJogador = criar_tabuleiro()
@@ -350,23 +359,19 @@ def main():
     tabuleiroComputador = criar_tabuleiro()
     feedbackComputador = criar_tabuleiro()
 
-    # MOSTRA TABULEIRO DO JOGADOR
     mostrar_tabuleiro(
         tabuleiroJogador,
         "TABULEIRO DO JOGADOR"
     )
 
-    # JOGADOR POSICIONA NAVIOS
     posicionando_navios_jogador(
         tabuleiroJogador
     )
 
-    # COMPUTADOR POSICIONA NAVIOS
     posicionando_navios_computador(
         tabuleiroComputador
     )
 
-    # INÍCIO DO JOGO
     while True:
 
         mostrar_tabuleiro(
