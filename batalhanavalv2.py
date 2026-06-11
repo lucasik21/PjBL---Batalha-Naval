@@ -24,31 +24,26 @@ FROTA = [
 ]
 # Cria a primeira função para verificar os valores de cada navio
 def verifica_navio(valor):
-    return valor in [
-        PORTA_AVIOES,
-        NAVIO_TANQUE,
-        CONTRATORPEDEIRO,
-        SUBMARINO,
-        DESTROIER
-    ]
+    return any(valor == navio for navio, _ in FROTA)
 
-# Cria uma função para atribuir um nome a cada barco, criando a variável de símbolo
+# Cria uma função para atribuir um nome a cada barco, criando a variável de símbolo, e até uma parte que caso tenha um
+# erro, ele coloca como desconhecido.
 def nome_navio(simbolo):
 
     if simbolo == PORTA_AVIOES:
-        return "Porta-Aviões"
+        return "PORTA-AVIÕES"
 
     if simbolo == NAVIO_TANQUE:
-        return "Navio-Tanque"
+        return "NAVIO-TANQUE"
 
     if simbolo == CONTRATORPEDEIRO:
-        return "Contratorpedeiro"
+        return "CONTRATORPEDEIRO"
 
     if simbolo == SUBMARINO:
-        return "Submarino"
+        return "SUBMARINO"
 
     if simbolo == DESTROIER:
-        return "Destroier"
+        return "DESTROIER"
 
     return "Desconhecido"
 
@@ -60,7 +55,7 @@ def tela_inicial():
 
     jogador = input("Digite seu nome: ")
 
-    print("\nBem-vindo,", jogador)
+    print("\nBem-vindo(a),", jogador)
     print("Prepare-se para a batalha!\n")
 
     return jogador
@@ -297,13 +292,13 @@ def navio_afundou(tabuleiro, simbolo):
 
 # Aqui ele conta quantos navios existem, a partir do símbolo e elemento, verificando e se houver ele adiciona um a
 # quantidade, onde demonstra a quantia de barcos restantes, cumprindo requisito.
-def contar_navios(tabuleiro):
-
+def contar_navios(tabuleiro, feedback):
     quantidade = 0
 
-    for linha in tabuleiro:
-        for elemento in linha:
-            if verifica_navio(elemento):
+    for i in range(10):
+        for j in range(10):
+
+            if verifica_navio(tabuleiro[i][j]) and feedback[i][j] != ACERTO:
                 quantidade += 1
 
     return quantidade
