@@ -1,17 +1,20 @@
+# Aqui importamos as bibliotecas random e time para utiliza-las futuramente para aleatorizar a jogada do computador,
+# e o time para dar a sensação de jogar a rodada
 import random
 import time
-import sys
 
+# Embaixo é feito um dicionário com os barcos e elementos e qual emoji é atribuido a tal
 PORTA_AVIOES = "🛫"
-NAVIO_TANQUE = "⛴️"
+NAVIO_TANQUE = "🚚"
 CONTRATORPEDEIRO = "🚢"
 SUBMARINO = "🚤"
-DESTROIER = "🛥️"
+DESTROIER = "⛵"
 
 AGUA = "🌊"
 ACERTO = "❌"
 ERRO = "⭕"
 
+# Atribuimos um valor aos barcos em uma lista
 FROTA = [
     (PORTA_AVIOES, 5),
     (NAVIO_TANQUE, 4),
@@ -19,7 +22,7 @@ FROTA = [
     (SUBMARINO, 2),
     (DESTROIER, 1)
 ]
-
+# Cria a primeira função para verificar os valores de cada navio
 def verifica_navio(valor):
     return valor in [
         PORTA_AVIOES,
@@ -28,7 +31,28 @@ def verifica_navio(valor):
         SUBMARINO,
         DESTROIER
     ]
-# Fazer o jogo da Batalha Naval, utilizando 4 matrizes, e cada uma sendo para certo modo de jogo: tabuleiro_jogador, feedback_jogador, tabuleiro_computador, feedback_computador.
+
+# Cria uma função para atribuir um nome a cada barco, criando a variável de símbolo
+def nome_navio(simbolo):
+
+    if simbolo == PORTA_AVIOES:
+        return "Porta-Aviões"
+
+    if simbolo == NAVIO_TANQUE:
+        return "Navio-Tanque"
+
+    if simbolo == CONTRATORPEDEIRO:
+        return "Contratorpedeiro"
+
+    if simbolo == SUBMARINO:
+        return "Submarino"
+
+    if simbolo == DESTROIER:
+        return "Destroier"
+
+    return "Desconhecido"
+
+# Criamos a tela inicial, para o jogador digitar seu nome, para ser interativo e que pedia nas regras
 def tela_inicial():
     print("=" * 40)
     print("        🚢 BATALHA NAVAL 🚢")
@@ -41,7 +65,8 @@ def tela_inicial():
 
     return jogador
 
-
+# Aqui se cria o tabuleiro que se utiliza no código inteiro, em apenas loops com for que se cria a matriz, e utilizamos
+# a AGUA do dicionário acima.
 def criar_tabuleiro():
     matriz = []
     for i in range(10):
@@ -52,13 +77,14 @@ def criar_tabuleiro():
         matriz.append(linha)
     return matriz
 
+# Aqui também se cria outra função muito utilizada, para dar print ao usuário sobre a matriz, onde se pede qual
+# tabuleiro ele quer, e o título em string que se vai usar.
+# Feito também uma formatação abaixo, para caber tudo certinho
 def mostrar_tabuleiro(tabuleiro, titulo):
-    letras = [" A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
 
     print("\n====== {} ======".format(titulo))
-    
-  
-    print("     {}".format("  ".join(letras)))
+
+    print("      A   B   C   D    E   F   G   H    I   J")
 
     for i in range(len(tabuleiro)):
         linha_formatada = ""
@@ -68,6 +94,9 @@ def mostrar_tabuleiro(tabuleiro, titulo):
 
         print("{:2} | {}".format(i + 1, linha_formatada))
 
+# E então a parte mais importante, sobre o posicionamento dos barcos pelo que o usuário digita, pedindo linha e coluna
+# Ele verifica com if se podem ser usadas tais linhas e colunas, e então pedem a direção, que se verifica com for com
+# flag, e no vertical ele vai preenchendo, porém a cada linha que se for preenchida, ele soma.
 def posicionando_navios_jogador(tabuleiro):
 
     letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
@@ -150,6 +179,9 @@ def posicionando_navios_jogador(tabuleiro):
 
             break
 
+# Aqui foi feito utilizando a biblioteca random, onde para cada simbolo, utilizando o nome_navio, ele vai ocupar certa
+# posição. Nesse caso, o computador escolhe um número aleatório de 0 a 9, e dentro disso ele preenche, também escolhendo
+# aleatoriamente o sentido.
 def posicionando_navios_computador(tabuleiro):
 
     for simbolo, tamanho in FROTA:
@@ -195,6 +227,7 @@ def posicionando_navios_computador(tabuleiro):
                         tabuleiro[linha + i][coluna] = simbolo
                     break
 
+
 def ataque_jogador(tabuleiroComputador, feedbackJogador):
 
     letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
@@ -226,22 +259,39 @@ def ataque_jogador(tabuleiroComputador, feedbackJogador):
 
         # Acertou um navio
         if verifica_navio(tabuleiroComputador[linha][coluna]):
-
+            time.sleep(0.5)
             print("💥 ACERTOU UMA EMBARCAÇÃO!")
 
+            navio = tabuleiroComputador[linha][coluna]
+            
             feedbackJogador[linha][coluna] = ACERTO
             tabuleiroComputador[linha][coluna] = AGUA
+            time.sleep(0.8)
+            if navio_afundou(tabuleiroComputador, navio):
+                print("💀", nome_navio(navio), "AFUNDADO!")
 
             print("Navios restantes do computador:", contar_navios(tabuleiroComputador))
 
         # Errou
         else:
-
+            time.sleep(0.5)
+            print("...")
+            time.sleep(0.5)
             print("Água!")
 
             feedbackJogador[linha][coluna] = ERRO
 
         break
+
+def navio_afundou(tabuleiro, simbolo):
+
+    for linha in tabuleiro:
+        for elemento in linha:
+
+            if elemento == simbolo:
+                return False
+            
+    return True
 
 def contar_navios(tabuleiro):
 
@@ -264,23 +314,30 @@ def ataque_computador(tabuleiroJogador, feedbackComputador):
         if feedbackComputador[linha][coluna] != AGUA:
             continue
 
+        time.sleep(0.2)
+
         print("\nComputador atacou:",
               linha + 1,
               chr(coluna + 65))
 
         if verifica_navio(tabuleiroJogador[linha][coluna]):
+            
+            navio = tabuleiroJogador[linha][coluna]
 
             print("💥 O computador acertou um navio!")
-
+            time.sleep(0.5)
             feedbackComputador[linha][coluna] = ACERTO
             tabuleiroJogador[linha][coluna] = AGUA
 
+            if navio_afundou(tabuleiroJogador, navio):
+                print("💀 Seu", nome_navio(navio), "FOI AFUNDADO!")
+                time.sleep(1)
             print("Seus navios restantes:", contar_navios(tabuleiroJogador))
 
         else:
 
             print("🌊 O computador errou!")
-
+            time.sleep(1)
             feedbackComputador[linha][coluna] = ERRO
 
         break
@@ -309,16 +366,17 @@ def main():
         tabuleiroComputador
     )
 
-    mostrar_tabuleiro(
-    tabuleiroComputador,
-    "TABULEIRO DO COMPUTADOR (TESTE)"
-)
     # INÍCIO DO JOGO
     while True:
 
         mostrar_tabuleiro(
             feedbackJogador,
             f"ATAQUES DE {nome} NO COMPUTADOR"
+        )
+
+        mostrar_tabuleiro(
+            tabuleiroJogador,
+            "SEUS NAVIOS"
         )
 
         ataque_jogador(
@@ -331,10 +389,18 @@ def main():
             print("\n🏆 VOCÊ VENCEU!")
             break
 
+        print("\n💻 Computador está pensando...")
+        time.sleep(0.2)
+
+        print('...', end="")
+        time.sleep(1)
+        print()
+
         ataque_computador(
             tabuleiroJogador,
             feedbackComputador
         )
+
 
         if contar_navios(tabuleiroJogador) == 0:
 
