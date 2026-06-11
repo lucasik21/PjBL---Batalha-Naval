@@ -5,6 +5,24 @@ Projeto de **Batalha Naval** em Python, criado para a disciplina de Raciocínio 
 
 Funcionando via terminal e desta vez, com a adição de funções, último conteúdo visto na matéria.
 
+## Execução do Projeto
+Ele funciona via Python, então é necessário da linguagem instalada na sua máquina, normalmente utilizado nas IDEs (PyCharm e VSCode)
+
+## Como jogar
+Jogadas
+O jogo ocorre em turnos:
+
+- O jogador escolhe uma posição para atacar o tabuleiro inimigo
+- O computador realiza ataques aleatórios
+- O sistema indica:
+  - 💥 Acerto
+  - 🌊 Água
+  - 💀 Navio afundado
+
+Controles
+- Linhas: `1 a 10`
+- Colunas: `A a J`
+
 ## Fluxo do jogo
 
 1. **Tela inicial** — Digite seu nome para começar.
