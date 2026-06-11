@@ -97,8 +97,8 @@ matriz10x10R = [
 
 
 def barco():
-    n = random.randint(1, 10)
-    g = random.randint(1, 10)
+    n = random.randint(1, 11)
+    g = random.randint(1, 11)
     matriz10x10R[n][g] = "🛥️  "
         
 for n in range(5):
@@ -112,5 +112,105 @@ while total <5:
     barco()
     total = sum(linha.count(item_procurado) for linha in matriz10x10R)
 
-for i in range(11):
-    print(*matriz10x10R[i])
+
+
+
+#a partir daqui e o 1v1
+matriz10x10RD = [ [ "",  "  1️⃣ "," 2️⃣  ",  "3️⃣ ", " 4️⃣ ", " 5️⃣ ", " 6️⃣ ", " 7️⃣ ", " 8️⃣ ", " 9️⃣ ", " 🔟 ",],
+    ["1️⃣ ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["2️⃣ ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["3️⃣ ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["4️⃣ ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["5️⃣ ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["6️⃣ ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["7️⃣ ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["8️⃣ ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["9️⃣ ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "],
+    ["🔟", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 ", "🌊 "]
+]
+
+pontosJogador = 0 
+pontosBot = 0 
+
+
+def jogadaPlayer():
+    while True: 
+        linha = int(input("digite uma linha de 1 a 10:"))
+        coluna = int(input("digite uma coluna de 1 a 10:"))
+        
+        if linha in range(1, 11) and coluna in range(1, 11):
+            
+            alvo = matriz10x10R[linha][coluna]
+            if alvo == "🛥️  ":
+                pontosJogador = pontosJogador + 1
+                print("vc acertou um barco inimigo!")
+                matriz10x10RD[linha][coluna] = "💥"
+                for i in range(11):
+                    print(*matriz10x10RD)
+            elif alvo == "🌊 ":
+                print("errrrrouuuuuuu(agua)")
+                matriz10x10RD[linha][coluna] = "✖️"
+                for i in range(11):
+                    print(*matriz10x10RD)
+                break
+            elif alvo == "✖️ ":
+                print("errrrrouuuu(casa ja explorada)")
+                for i in range(11):
+                    print(*matriz10x10RD)
+                break
+            else:
+                print("errrrrouuuu(casa ja explorada)")
+                for i in range(11):
+                    print(*matriz10x10RD)
+                break
+        else:
+            print("cordenadas incorretas, tente dnv:")
+
+def jogadaBot():
+    h = random.randint(1, 11)
+    j = random.randint(1, 11)
+    linhaBot = h
+    colunaBot = j
+    while True:
+        alvoBot = matriz10x10[linhaBot][colunaBot]
+        if alvoBot == "🛥️  ":
+            pontosBot = pontosBot + 1
+            print("o bot acertou seu barco")
+            matriz10x10[linhaBot][colunaBot] = "💥"
+            for i in range(11):
+                print(*matriz10x10)
+        elif alvoBot == "🌊":
+            print("o bot errou")
+            matriz10x10[linhaBot][colunaBot] = "✖️"
+            for i in range(11):
+                print(*matriz10x10)
+            break
+        elif alvoBot == "✖️":
+            print("o bot errou(casa ja explorada)")
+            for i in range(11):
+                print(*matriz10x10)
+            break
+        else:
+            print("errrrrouuuu(casa ja explorada)")
+            for i in range(11):
+                print(*matriz10x10)
+            break
+
+def rodadas():
+    while True:
+        jogadaPlayer()
+        jogadaBot()
+
+        if pontosJogador == "5":
+            print("vc ganhou")
+            break
+        elif pontosBot == "5":
+            print("o bot ganhou, vc perdeu")
+            break
+
+
+
+
+
+
+
