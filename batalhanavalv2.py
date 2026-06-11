@@ -2,15 +2,32 @@ import random
 import time
 import sys
 
-PORTA_AVIOES = "🛫 "
-NAVIO_TANQUE = "⛴️ "
-CONTRATORPEDEIRO = "🚢 "
-SUBMARINO = "🚤 "
-DESTROIER = "🛥️ "
+PORTA_AVIOES = "🛫"
+NAVIO_TANQUE = "⛴️"
+CONTRATORPEDEIRO = "🚢"
+SUBMARINO = "🚤"
+DESTROIER = "🛥️"
+
 AGUA = "🌊"
 ACERTO = "❌"
 ERRO = "⭕"
 
+FROTA = [
+    (PORTA_AVIOES, 5),
+    (NAVIO_TANQUE, 4),
+    (CONTRATORPEDEIRO, 3),
+    (SUBMARINO, 2),
+    (DESTROIER, 1)
+]
+
+def verifica_navio(valor):
+    return valor in [
+        PORTA_AVIOES,
+        NAVIO_TANQUE,
+        CONTRATORPEDEIRO,
+        SUBMARINO,
+        DESTROIER
+    ]
 # Fazer o jogo da Batalha Naval, utilizando 4 matrizes, e cada uma sendo para certo modo de jogo: tabuleiro_jogador, feedback_jogador, tabuleiro_computador, feedback_computador.
 def tela_inicial():
     print("=" * 40)
@@ -44,26 +61,31 @@ def mostrar_tabuleiro(tabuleiro, titulo):
     print("     {}".format("  ".join(letras)))
 
     for i in range(len(tabuleiro)):
-        print("{:2} | {}".format(i + 1, " ".join(tabuleiro[i])))
+        linha_formatada = ""
+
+        for elemento in tabuleiro[i]:
+            linha_formatada += "{:<3}".format(elemento)
+
+        print("{:2} | {}".format(i + 1, linha_formatada))
 
 def posicionando_navios_jogador(tabuleiro):
+
     letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
 
-    for i in range(5):
+    for simbolo, tamanho in FROTA:
+
         while True:
-            print("\nPosicionando navio {}".format(i + 1))
+
+            print("\nPosicionando", simbolo)
+            print("Tamanho:", tamanho)
 
             try:
-                linha = int(input("Linha (1-10): ")) - 1
+                linha = int(input("Linha inicial (1-10): ")) - 1
             except ValueError:
-                print("Linha inválida! Digite apenas números.")
+                print("Digite apenas números.")
                 continue
-                
-            coluna = input("Coluna (A-J): ").upper()
 
-            if linha < 0 or linha > 9:
-                print("Linha inválida!")
-                continue
+            coluna = input("Coluna (A-J): ").upper()
 
             if coluna not in letras:
                 print("Coluna inválida!")
@@ -71,27 +93,107 @@ def posicionando_navios_jogador(tabuleiro):
 
             coluna = letras.index(coluna)
 
-            
-            if tabuleiro[linha][coluna] == NAVIO:
-                print("Já existe um navio nessa posição!")
+            if linha < 0 or linha > 9:
+                print("Linha inválida!")
                 continue
 
-            
-            tabuleiro[linha][coluna] = NAVIO
-            
-            mostrar_tabuleiro(tabuleiro, "TABULEIRO DO JOGADOR")
+            direcao = input("Horizontal (H) ou Vertical (V)? ").upper()
+
+            if direcao not in ["H", "V"]:
+                print("Direção inválida!")
+                continue
+
+            # HORIZONTAL
+            if direcao == "H":
+
+                if coluna + tamanho > 10:
+                    print("Navio ultrapassa o tabuleiro!")
+                    continue
+
+                livre = True
+
+                for i in range(tamanho):
+                    if tabuleiro[linha][coluna + i] != AGUA:
+                        livre = False
+
+                if not livre:
+                    print("Já existe um navio nessa posição!")
+                    continue
+
+                for i in range(tamanho):
+                    tabuleiro[linha][coluna + i] = simbolo
+
+            # VERTICAL
+            else:
+
+                if linha + tamanho > 10:
+                    print("Navio ultrapassa o tabuleiro!")
+                    continue
+
+                livre = True
+
+                for i in range(tamanho):
+                    if tabuleiro[linha + i][coluna] != AGUA:
+                        livre = False
+
+                if not livre:
+                    print("Já existe um navio nessa posição!")
+                    continue
+
+                for i in range(tamanho):
+                    tabuleiro[linha + i][coluna] = simbolo
+
+            mostrar_tabuleiro(
+                tabuleiro,
+                "TABULEIRO DO JOGADOR"
+            )
+
             break
 
 def posicionando_navios_computador(tabuleiro):
-    for i in range(5):
+
+    for simbolo, tamanho in FROTA:
+
         while True:
+
+            direcao = random.choice(["H", "V"])
+
             linha = random.randint(0, 9)
             coluna = random.randint(0, 9)
 
-            if tabuleiro[linha][coluna] == NAVIO:
-                continue
-            tabuleiro[linha][coluna] = NAVIO
-            break
+            # Horizontal
+            if direcao == "H":
+
+                if coluna + tamanho > 10:
+                    continue
+
+                livre = True
+
+                for i in range(tamanho):
+                    if tabuleiro[linha][coluna + i] != AGUA:
+                        livre = False
+
+                if livre:
+                    for i in range(tamanho):
+                        tabuleiro[linha][coluna + i] = simbolo
+                    break
+
+            # Vertical
+            else:
+
+                if linha + tamanho > 10:
+                    continue
+
+                livre = True
+
+                for i in range(tamanho):
+                    if tabuleiro[linha + i][coluna] != AGUA:
+                        livre = False
+
+                if livre:
+                    for i in range(tamanho):
+                        tabuleiro[linha + i][coluna] = simbolo
+                    break
 
 def ataque_jogador(tabuleiroComputador, feedbackJogador):
 
@@ -123,7 +225,7 @@ def ataque_jogador(tabuleiroComputador, feedbackJogador):
             continue
 
         # Acertou um navio
-        if tabuleiroComputador[linha][coluna] == NAVIO:
+        if verifica_navio(tabuleiroComputador[linha][coluna]):
 
             print("💥 ACERTOU UMA EMBARCAÇÃO!")
 
@@ -147,7 +249,7 @@ def contar_navios(tabuleiro):
 
     for linha in tabuleiro:
         for elemento in linha:
-            if elemento == NAVIO:
+            if verifica_navio(elemento):
                 quantidade += 1
 
     return quantidade
@@ -166,7 +268,7 @@ def ataque_computador(tabuleiroJogador, feedbackComputador):
               linha + 1,
               chr(coluna + 65))
 
-        if tabuleiroJogador[linha][coluna] == NAVIO:
+        if verifica_navio(tabuleiroJogador[linha][coluna]):
 
             print("💥 O computador acertou um navio!")
 
@@ -207,6 +309,10 @@ def main():
         tabuleiroComputador
     )
 
+    mostrar_tabuleiro(
+    tabuleiroComputador,
+    "TABULEIRO DO COMPUTADOR (TESTE)"
+)
     # INÍCIO DO JOGO
     while True:
 
